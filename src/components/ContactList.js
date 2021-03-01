@@ -3,23 +3,21 @@ import { db, serverTime } from "../services/firebase";
 import { connect } from "react-redux";
 import Contacts from "../pages/Contacts";
 import { recivedMsgTime } from "../redux/action";
-import AddContact from "./AddContact";
 export class ContactList extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       contacts: [],
-      isConnected: false,
-      userContacts: null,
-      timestamp: null,
-      connectedRef: null,
+      //isConnected: false,
+      //userContacts: null,
+      //timestamp: null,
+      //connectedRef: null,
     };
-    this.getUid = this.getUid.bind(this);
+    //this.getUid = this.getUid.bind(this);
   }
   componentDidMount() {
-    var mesgTimestamp = {};
-    var userContacts = db.ref(`users/${this.props.userUID}/usercontacts`).on(
+    var userContacts = db.ref(`users/${this.props.userUid}/contacts`).on(
       "value",
       (snapshot) => {
         var contact = [];
@@ -33,7 +31,7 @@ export class ContactList extends Component {
       }
     );
 
-    var timestamp = db.ref(`contacts/${this.props.userUID}`).on(
+    {/*var timestamp = db.ref(`contacts/${this.props.userUID}`).on(
       "value",
       (snapshots) => {
         snapshots.forEach((snap) => {
@@ -44,11 +42,11 @@ export class ContactList extends Component {
       (error) => {
         console.log(error);
       }
-    );
+    );*/}
 
-    var userRef = db.ref("userPresence/" + this.props.userUID);
-    var connectedRef = db.ref(".info/connected").on("value", (snap) => {
-      if (snap.val()) {
+    //var userRef = db.ref("userPresence/" + this.props.userUID);
+    //var connectedRef = db.ref(".info/connected").on("value", (snap) => {
+     {/*} if (snap.val()) {
         userRef.onDisconnect().set(serverTime);
         userRef.set(true);
         this.setState({ isConnected: true });
@@ -60,10 +58,10 @@ export class ContactList extends Component {
       connectedRef: connectedRef,
       userContacts: userContacts,
       timestamp: timestamp,
-    });
+    });*/}
   }
 
-  componentWillUnmount() {
+  /*componentWillUnmount() {
     const { userContacts, connectedRef, timestamp } = this.state;
     db.ref(`users/${this.props.userUID}/usercontacts`).off(
       "value",
@@ -71,7 +69,7 @@ export class ContactList extends Component {
     );
     db.ref(`contacts/${this.props.userUID}`).off("value", timestamp);
     db.ref(".info/connected").off("value", connectedRef);
-  }
+  }*/
   getUid(uid1, uid2) {
     if (uid1 < uid2) {
       return uid1 + uid2;
@@ -80,30 +78,30 @@ export class ContactList extends Component {
     }
   }
   render() {
-    const { userUID } = this.props;
+    const { userUid } = this.props;
     console.log("contlist");
     return (
-      <div>
-        <AddContact userUid={userUID} />
-        {this.state.isConnected ? null : <p>You are not connected</p>}
+      <>
+        {/*this.state.isConnected ? null : <p>You are not connected</p>*/}
         {this.state.contacts.length > 0 ? (
-          <div>
+          <>
             {this.state.contacts.map((contact, i) => {
-              const path = this.getUid(userUID, contact.uid);
+              const path = this.getUid(userUid, contact.uid);
               return (
                 <Contacts
                   key={i}
                   contactDetail={contact}
                   path={path}
-                  state={this.state.isConnected}
+                  userUid={userUid}
+                  //state={this.state.isConnected}
                 />
               );
             })}
-          </div>
+          </>
         ) : (
           <div className="p-4">No contacts is available please add contacs</div>
         )}
-      </div>
+      </>
     );
   }
 }

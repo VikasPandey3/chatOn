@@ -1,8 +1,8 @@
-import { RECIEVED_CHAT_DATA, CHAT_OWNER,RECIEVED_MESSAGES_TIMESTAMP } from "./const";
+import { RECIEVED_CHAT_DATA, SET_CURRENT_CHAT_PATH,RECIEVED_MESSAGES_TIMESTAMP } from "./const";
 
 const initChat = {
   path: "",
-  contactDetail:{},
+  reveiver:"",
 };
 const initTimestamp = {
   lastTimestamp:{},
@@ -10,13 +10,13 @@ const initTimestamp = {
 }
 export const chatUpdateReducer = (state = initChat, action) => {
   switch (action.type) {
-    case CHAT_OWNER:
+    case SET_CURRENT_CHAT_PATH:
       if (state.path !== action.payload[0]) {
         console.log("passowner");
         return {
           ...state,
           path: action.payload[0],
-          contactDetail: action.payload[1],
+          receiver: action.payload[1],
           
         };
       } else {

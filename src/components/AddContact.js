@@ -34,26 +34,12 @@ export class AddContact extends Component {
               var contact = {
                 email: Info.email,
                 name: Info.name,
-                uid: Info.uid,
-                isblock: false,
-                lastSeenMessage: 0,
-                lastSentMessage: 0,
+                uid: Info.uid
               };
-              var update = {};
-              update[`contacts/${this.props.userUid}/${Info.uid}`] = {
-                lastSentMessage: 0,
-                lastSeenMessage: 0,
-              };
-              update[
-                `users/${this.props.userUid}/usercontacts/${Info.uid}`
-              ] = contact;
-
-              db.ref()
-                .update(update)
-                .then(() => {
-                  console.log("successfully added");
-                  this.setState({ searchEmail: "" });
-                });
+              db.ref(`users/${this.props.userUid}/contacts`)
+                .child(Info.uid)
+                .set(contact)
+                .catch((msg)=>{console.log(msg)})
             });
           } else {
             this.setState({ error: "Contact not found" });

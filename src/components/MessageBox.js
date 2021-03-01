@@ -27,12 +27,11 @@ export class MessageBox extends Component {
         content: this.state.content,
         timestamp: Date.now(),
         from: this.state.user.uid,
-        to: this.props.ownerDetail,
+        to: this.props.reveiver_uid,
       };
       
       db.ref("onetoone").child(`${this.props.path}`).push(message)
-      updates[`contacts/${this.props.ownerDetail}/${this.state.user.uid}/lastSentMessage`]=message.timestamp 
-      updates[`users/${this.state.user.uid}/usercontacts/${this.props.ownerDetail}/lastSentMessage`]=message.timestamp
+      updates[`onetoone/${this.props.path}/lastSentMessageTimestamp/${this.state.user.uid}`]=message.timestamp 
         
        await db.ref().update(updates,(error)=>{
          console.log(error)
@@ -67,7 +66,7 @@ export class MessageBox extends Component {
 const mapStateToProps = (state) => {
   return {
     path: state.getChat.path,
-    ownerDetail: state.getChat.contactDetail.uid,
+    reveiver_uid: state.getChat.receiver,
   };
 };
 
