@@ -2,7 +2,7 @@ import { RECIEVED_CHAT_DATA, SET_CURRENT_CHAT_PATH,RECIEVED_MESSAGES_TIMESTAMP }
 
 const initChat = {
   path: "",
-  reveiver:"",
+  reveiver:""
 };
 const initTimestamp = {
   lastTimestamp:{},

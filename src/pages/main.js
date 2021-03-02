@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { auth } from "../services/firebase";
+import { db,auth } from "../services/firebase";
 import AddContact from "../components/AddContact";
-//import ShowChat from "./ShowChat";
+import Contacts from "../pages/Contacts";
+import ShowChat from "./ShowChat";
 //import Status from "./Status";
 import Nav from "../components/Nav";
-import ContactList from "../components/ContactList";
+//import ContactList from "../components/ContactList";
 import MessageBox from "../components/MessageBox";
 import "../assets/ChatBox.css";
 //import ImageUpload from "../components/ImageUpload";
@@ -13,9 +14,32 @@ class main extends Component {
     super(props);
     this.state = {
       user: auth().currentUser,
+      contacts:[],
     };
+    this.getUid = this.getUid.bind(this);
   }
-
+  getUid(uid1, uid2) {
+    if (uid1 < uid2) {
+      return uid1 + uid2;
+    } else {
+      return uid2 + uid1;
+    }
+  }
+  componentDidMount() {
+    db.ref(`users/${this.state.user.uid}/contacts`).on(
+      "value",
+      (snapshot) => {
+        var contact = [];
+        snapshot.forEach((snap) => {
+          contact.push(snap.val());
+        });
+        this.setState({ contacts: contact });
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
   render() {
     console.log("main render");
     return (
@@ -28,9 +52,26 @@ class main extends Component {
           <div className='h-20 bg-green-300 border-b-2'>
             <AddContact userUid={this.state.user.uid}/>
           </div>
-          <ContactList userUid={this.state.user.uid}/>
+          {this.state.contacts.length > 0 ? (
+          <>
+            {this.state.contacts.map((contact, i) => {
+              const path = this.getUid(this.state.user.uid, contact.uid);
+              return (
+                <Contacts
+                  key={i}
+                  contactDetail={contact}
+                  path={path}
+                  userUid={this.state.user.uid}
+                />
+              );
+            })}
+          </>
+        ) : (
+          <div className="p-4">No contacts is available please add contacs</div>
+        )}
         </div>
         <div className='col-span-6 sm:col-span-4 bg-teal-700 h-full relative'>
+          <ShowChat/>
           <div className='absolute bottom-0 w-full'>
           <MessageBox/>
           </div>

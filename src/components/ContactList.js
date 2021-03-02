@@ -14,7 +14,7 @@ export class ContactList extends Component {
       //timestamp: null,
       //connectedRef: null,
     };
-    //this.getUid = this.getUid.bind(this);
+    this.getUid = this.getUid.bind(this);
   }
   componentDidMount() {
     var userContacts = db.ref(`users/${this.props.userUid}/contacts`).on(

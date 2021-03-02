@@ -30,7 +30,7 @@ export class MessageBox extends Component {
         to: this.props.reveiver_uid,
       };
       
-      db.ref("onetoone").child(`${this.props.path}`).push(message)
+      db.ref(`onetoone/${this.props.path}`).child('chats').push(message)
       updates[`onetoone/${this.props.path}/lastSentMessageTimestamp/${this.state.user.uid}`]=message.timestamp 
         
        await db.ref().update(updates,(error)=>{

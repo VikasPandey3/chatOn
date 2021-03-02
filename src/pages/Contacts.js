@@ -18,10 +18,8 @@ class Contacts extends Component {
     const receiver=contactDetail.uid
     db.ref(`onetoone/${path}/lastSentMessageTimestamp`)
       .on("value", (snapshot) => {
-        console.log("notfy",snapshot.val()[userUid])
-        if (snapshot.val()[userUid]<snapshot.val()[receiver]){
+        if (snapshot.val()&&snapshot.val()[userUid]<snapshot.val()[receiver]){
           // New Message, update UI.
-          
           this.setState({NewMessage: true });
         }
       });

@@ -21,7 +21,7 @@ export class Message extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-    lastSeenTimeStamp: state.msgTimestamp.lastTimestamp,
+    //lastSeenTimeStamp: state.msgTimestamp.lastTimestamp,
   };
 };
 export default connect(mapStateToProps, null)(Message);
