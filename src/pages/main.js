@@ -3,7 +3,7 @@ import { db,auth } from "../services/firebase";
 import AddContact from "../components/AddContact";
 import Contacts from "../pages/Contacts";
 import ShowChat from "./ShowChat";
-//import Status from "./Status";
+import Status from "./Status";
 import Nav from "../components/Nav";
 //import ContactList from "../components/ContactList";
 import MessageBox from "../components/MessageBox";
@@ -70,10 +70,17 @@ class main extends Component {
           <div className="p-4">No contacts is available please add contacs</div>
         )}
         </div>
-        <div className='col-span-6 sm:col-span-4 bg-teal-700 h-full relative'>
-          <ShowChat/>
-          <div className='absolute bottom-0 w-full'>
-          <MessageBox/>
+        <div className='col-span-6 sm:col-span-4 bg-teal-700 h-full'>
+          <div className='flex flex-col h-full'>
+          <div className='flex-grow-0'>
+            <Status/>
+          </div>
+          <div className='bg-white flex-grow'>
+            <ShowChat/>
+          </div>
+          <div className='flex-grow-0'>
+            <MessageBox/>
+          </div>
           </div>
         </div>
       </div>

@@ -4,22 +4,19 @@ import { connect } from "react-redux";
 class Status extends Component {
   
   render() {
-    console.log(this.props.detail)
+    console.log(this.props.receiver)
     return (
-      <div style={{backgroundColor:'#7ed6df'}}>
-        <div className='flex p-2 h-16'>
-        <p className="text-black m-2">
-          {this.props.detail===undefined ? null : this.props.detail.name}
-          Vikas
-        </p>
+        <div className='flex flex-wrap h-16 bg-gray-700 content-center'>
+          <div className="text-white p-2 text-2xl font-serif uppercase">
+          {this.props.receiver===undefined ? null : this.props.receiver.name}
+          </div>
         </div>
-      </div>
     );
   }
 }
 const mapStateToProps = (state) => {
   return {
-    detail: state.getChat.contactDetail,
+    receiver: state.getChat.receiver,
   };
 };
 

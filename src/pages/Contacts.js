@@ -24,16 +24,10 @@ class Contacts extends Component {
         }
       });
   }
-  /*componentWillUnmount() {
-    const { contactDetail } = this.props;
-    db.ref(`userPresence/${contactDetail.uid}`).off(
-      "value",
-      this.state.presense
-    );
-  }*/
+  
   passData() {
     const { path, contactDetail } = this.props;
-    this.props.currentChatPath([path,contactDetail.uid])
+    this.props.currentChatPath([path,contactDetail])
     this.setState({NewMessage:false})
   }
   render() {

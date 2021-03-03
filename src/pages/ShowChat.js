@@ -33,7 +33,7 @@ class ShowChat extends Component {
   
   render() {
     return (
-    <div id="chat-view" className=" flex flex-col bg-white h-full overflow-auto p-4">
+    <div id="chat-view" className=" flex flex-col bg-white h-full overflow-auto justify-end p-4">
       {this.state.chats.map((chat, i) => {
       return <div key={i}><p className={'p-2 m-2 font-serif rounded-md '+(chat.from===this.state.user.uid?'float-right bg-indigo-400 text-white':'float-left bg-indigo-200 text-black')}>{chat.content}</p></div>
       

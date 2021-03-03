@@ -27,7 +27,7 @@ export class MessageBox extends Component {
         content: this.state.content,
         timestamp: Date.now(),
         from: this.state.user.uid,
-        to: this.props.reveiver_uid,
+        to: this.props.reveiver.uid,
       };
       
       db.ref(`onetoone/${this.props.path}`).child('chats').push(message)
@@ -66,7 +66,7 @@ export class MessageBox extends Component {
 const mapStateToProps = (state) => {
   return {
     path: state.getChat.path,
-    reveiver_uid: state.getChat.receiver,
+    reveiver: state.getChat.receiver,
   };
 };
 
