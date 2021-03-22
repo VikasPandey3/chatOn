@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { db,auth } from "../services/firebase";
+import { db, auth } from "../services/firebase";
 import AddContact from "../components/AddContact";
 import Contacts from "../pages/Contacts";
 import ShowChat from "./ShowChat";
@@ -14,7 +14,7 @@ class main extends Component {
     super(props);
     this.state = {
       user: auth().currentUser,
-      contacts:[],
+      contacts: [],
     };
     this.getUid = this.getUid.bind(this);
   }
@@ -40,51 +40,81 @@ class main extends Component {
       }
     );
   }
+  
   render() {
     console.log("main render");
     return (
-      <>
-      <div className='fixed top-0 w-full z-10'>
-          <Nav user={this.state.user} />
-      </div>
-      <div className='grid grid-cols-6 mt-16 overflow-hidden' style={{height:'90vh'}}>
-        <div className='hidden sm:block sm:col-span-2 bg-yellow-200 overflow-y-auto'>
-          <div className='h-20 bg-green-300 border-b-2'>
-            <AddContact userUid={this.state.user.uid}/>
+      <div className="absolute w-full h-full overflow-hidden top-0 left-0 p-0 m-0 bg-yello-400">
+        {/* first div covering full screen */}
+        <div
+          className="h-full w-full relative overflow-hidden overflow-y-auto bg-green-900"
+          style={{ zIndex: "100" }}
+        >
+          {/* second dive can overflow in y direction */}
+          <div className="flex relative top-0 left-0 w-full h-full overflow-hidden origin-center bg-white"
+              style={{ minHeight: "512px", backgroundPosition: "0 0" }}
+            >
+            {/* third div with min height */}
+            <div 
+              className="h-full relative overflow-hidden bg-pink-500"
+              style={{
+                flexBasis: "30%",
+                transform: "translatez(0)",
+                // zIndex: "100",
+              }}
+            >
+              {/* second div third div */} 
+              <div className="flex flex-col h-full">
+                <header
+                  className="flex bg-red-400  flex-baseline w-full content-center justify-end px-4 py-3 relative"
+                  style={{ height: "59px", 
+                  // zIndex: "1000",
+                    flex: "none" }}
+                >
+                  <div>{this.state.user.email}</div>
+                </header>
+                {/* <span className="flex flex-col" style={{ flex: "none" }}></span> */}
+                <div className="bg-green-500" style={{ flex: "none", height: "64px" }}>
+                  <AddContact/>
+                </div>
+                <div className="flex-grow overflow-y-auto relative flex flex-col bg-blue-400">
+                  {this.state.contacts.map((contact,i)=>{
+                    const path=this.getUid(this.state.user.uid,contact.uid);
+                    return(<Contacts key={i} contactDetail={contact} path={path}/> )
+                    })
+                  }
+                </div>
+              </div>
+            </div>
+            <div
+                className="h-full hidden relative overflow-hidden origin-top-left bg-white"
+                style={{
+                  flexBasis: "70%",
+                  transform: "translatez(0)",
+                  // zIndex: "100",
+                }}
+              >
+                {/* third div inside third div*/} 
+                <div className="flex flex-col h-full origin-top-left bg-yellow-600">
+                  <div className="w-full h-full absolute top-0 bg-blue-900"></div>
+                  <Status/>
+                  <ShowChat/>
+                  <MessageBox/>
+                </div>
+              </div>
+            <div className="h-full relative overflow-hidden origin-top-left bg-white relative"
+                style={{
+                  flexBasis: "70%",
+                  transform: "translatez(0)",
+                  // zIndex: "100",
+                
+                
+                }}>
+               <div className='absolute text-center' style={{top:'50%', left:'50%',width:'200px',height:'50px',marginTop:'-25px',marginLeft:'-100px'}}> Wellcome to chatOn</div>
+            </div>
           </div>
-          {this.state.contacts.length > 0 ? (
-          <>
-            {this.state.contacts.map((contact, i) => {
-              const path = this.getUid(this.state.user.uid, contact.uid);
-              return (
-                <Contacts
-                  key={i}
-                  contactDetail={contact}
-                  path={path}
-                  userUid={this.state.user.uid}
-                />
-              );
-            })}
-          </>
-        ) : (
-          <div className="p-4">No contacts is available please add contacs</div>
-        )}
         </div>
-        <div className='col-span-6 sm:col-span-4 bg-teal-700 h-full'>
-          <div className='flex flex-col h-full'>
-          <div className='flex-grow-0'>
-            <Status/>
-          </div>
-          <div className='bg-white flex-grow'>
-            <ShowChat/>
-          </div>
-          <div className='flex-grow-0'>
-            <MessageBox/>
-          </div>
-          </div>
-        </div>
       </div>
-      </>
     );
   }
 }

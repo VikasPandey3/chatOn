@@ -6,11 +6,14 @@ class Status extends Component {
   render() {
     console.log(this.props.receiver)
     return (
-        <div className='flex flex-wrap h-16 bg-gray-700 content-center'>
-          <div className="text-white p-2 text-2xl font-serif uppercase">
-          {this.props.receiver===undefined ? null : this.props.receiver.name}
-          </div>
-        </div>
+      <header
+      className="flex bg-red-400 border-l-2 flex-baseline w-full content-center justify-between px-4 py-3 relative"
+      style={{ height: "59px", 
+      zIndex: "1000", 
+      flex: "none" }}
+    >
+      <div>{this.props.receiver===undefined ? null : this.props.receiver.name}</div>
+    </header>
     );
   }
 }

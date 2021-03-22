@@ -8,26 +8,30 @@ export class MessageBox extends Component {
 
     this.state = {
       user: auth().currentUser,
-      content: "",
       writeError: null,
+      visibility:'visible',
     };
-    this.handleChange = this.handleChange.bind(this);
+    this.changeVisibility = this.changeVisibility.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  handleChange(event) {
-    this.setState({
-      content: event.target.value,
-    });
+  changeVisibility(){
+    var message=document.getElementById('input_message').textContent;
+    if((message.length)===0){
+      this.setState({visibility:'visible'})
+    }
+    else if(this.state.visibility==='visible'){
+      this.setState({visibility:'hidden'})
+    }
   }
   async handleSubmit() {
     this.setState({ writeError: null });
     try {
       var updates={}
       var message = {
-        content: this.state.content,
+        content: document.getElementById('input_message').textContent,
         timestamp: Date.now(),
         from: this.state.user.uid,
-        to: this.props.reveiver.uid,
+        to: this.props.receiver.uid,
       };
       
       db.ref(`onetoone/${this.props.path}`).child('chats').push(message)
@@ -43,30 +47,28 @@ export class MessageBox extends Component {
   }
   render() {
     return (
-      <div style={{backgroundColor:'#7ed6df'}} className='flex'>
-          <textarea
-          style={{borderRadius:'25px'}}
-            className="w-11/12 pl-5 py-3 m-3 text-black bg-white border-none resize-none placeholder-black overflow-hidden focus:outline-none"
-            onChange={this.handleChange}
-            value={this.state.content}
-            rows='1'
-            placeholder="Write here..."
-          ></textarea>
-          <button
-            className="w-1/12 py-3 px-2 m-3 ml-0 text-white bg-blue-700 rounded-md "
-            type="button"
-            onClick={this.handleSubmit}
-          >
-            Send
-          </button>
-      </div>
+      <>
+      <footer className="bg-teal-500 relative order-3 w-full block" style={{flex: "none", minHeight: "62px" }}>
+        <div className='flex flex-row border-l-2 visible relative max-w-full' style={{minHeight: "62px",padding:'5px 10px' }}>
+          <div className='flex' style={{flex:'none',padding:'5px 10px', minHeight:'52px',marginRight:'-10px'}}></div>
+          <div className=' bg-gray-400 min-w-0' style={{borderRadius:'21px',flex:'auto',padding:'9px 12px 11px',margin:'5px 10px', minHeight:'20px'}}>
+            <div className='flex relative overflow-hidden pr-0 flex-grow flex-shrink' >
+              <div className='absolute top-0' style={{left:'2px',visibility:this.state.visibility}}>
+              Type message here</div>
+              <div onInput={this.changeVisibility} id='input_message' className='relative overflow-hidden overflow-y-auto w-full' contentEditable='true' style={{minHeight:'20px',maxHeight:'100px',wordWrap:'break-word'}}></div>
+            </div>
+          </div>
+          <div style={{flex:'none',padding:'5px 10px', minHeight:'52px'}}></div>
+        </div>
+      </footer>
+      </>
     );
   }
 }
 const mapStateToProps = (state) => {
   return {
     path: state.getChat.path,
-    reveiver: state.getChat.receiver,
+    receiver: state.getChat.receiver,
   };
 };
 

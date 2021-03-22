@@ -71,7 +71,7 @@ export class Nav extends Component {
       <nav className='flex flex-col sm:flex-row bg-gray-800 justify-between w-full'>
             <div className=" flex justify-between sm:justify-start border-b-2 border-gray-200 sm:border-none">
                 <strong><div className='text-gray-200 m-2 p-3 uppercase'>Chat On</div></strong>
-                <button className='sm:hidden text-gray-200 m-2 p-3 focus:outline-none' 
+                <button className='focus:outline-none focus:ring focus:border-blue-300 sm:hidden text-gray-200 m-2 p-3' 
                   onClick={()=>this.setState({toggle:!this.state.toggle})}>
                 <i className={!this.state.toggle ?"fa fa-fw fa-bars":"fa fa-fw fa-times"}></i></button>
             </div>
