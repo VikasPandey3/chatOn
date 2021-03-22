@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { db, auth } from "../services/firebase";
 import AddContact from "../components/AddContact";
+import { connect } from "react-redux";
 import Contacts from "../pages/Contacts";
 import ShowChat from "./ShowChat";
 import Status from "./Status";
@@ -87,11 +88,11 @@ class main extends Component {
               </div>
             </div>
             <div
-                className="h-full hidden relative overflow-hidden origin-top-left bg-white"
+                className={this.props.visibility?" block ":" hidden "+"h-full relative overflow-hidden origin-top-left bg-white"}
                 style={{
                   flexBasis: "70%",
                   transform: "translatez(0)",
-                  // zIndex: "100",
+                  // display:this.props.visibility?'block':'hidden',
                 }}
               >
                 {/* third div inside third div*/} 
@@ -102,11 +103,11 @@ class main extends Component {
                   <MessageBox/>
                 </div>
               </div>
-            <div className="h-full relative overflow-hidden origin-top-left bg-white relative"
+            <div className={!this.props.visibility?" block ":" hidden "+"h-full relative overflow-hidden origin-top-left bg-white relative"}
                 style={{
                   flexBasis: "70%",
                   transform: "translatez(0)",
-                  // zIndex: "100",
+                  // display:!this.props.visibility?'block':'hidden'
                 
                 
                 }}>
@@ -118,4 +119,9 @@ class main extends Component {
     );
   }
 }
-export default main;
+const mapStateToProp=(state)=>{
+  return{
+    visibility:state.getChat.visibility
+  }
+}
+export default connect(mapStateToProp,null)(main);
