@@ -31,7 +31,7 @@ const obj = {
 export const setCurrentChatPath=(path)=>{
   return{
     type:SET_CURRENT_CHAT_PATH,
-    payload:path
+    payload:{...path}
   }
 }
 /*export const contactMessages = (x) => {

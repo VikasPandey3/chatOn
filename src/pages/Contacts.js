@@ -9,26 +9,45 @@ class Contacts extends Component {
     this.state = {
       //isOnline: null,
       //presense: null,
-      NewMessage:false
+      NewMessage:false,
+      lastMessageReceivedTimestamp:0,
     };
   }
 
   componentDidMount() {
-    const {path,contactDetail,userUid} = this.props;
+    const {path,contactDetail,userUid,currentOppositeUser} = this.props;
     const receiver=contactDetail.uid
+    
     db.ref(`onetoone/${path}/lastSentMessageTimestamp`)
       .on("value", (snapshot) => {
-        if (snapshot.val()&&snapshot.val()[userUid]<snapshot.val()[receiver]){
-          // New Message, update UI.
-          this.setState({NewMessage: true });
+        // if (snapshot.val()&&snapshot.val()[userUid]<snapshot.val()[receiver]){
+        //   // New Message, update UI.
+        //   this.setState({NewMessage: true });
+        // }
+        console.log(this.props.currentOppositeUser,"A",receiver)
+        if((contactDetail.lastSeenMessageTimestamp)< snapshot.val()[receiver]){
+          if(this.props.currentOppositeUser===receiver){
+            this.setState({lastMessageReceivedTimestamp:snapshot.val()[receiver] });
+          }
+          else{
+            this.setState({NewMessage: true,lastMessageReceivedTimestamp:snapshot.val()[receiver] });
+          }
         }
       });
   }
   
   passData() {
-    const { path, contactDetail } = this.props;
+    const { path, contactDetail,userUid } = this.props;
     this.props.currentChatPath([path,contactDetail])
-    this.setState({NewMessage:false})
+    
+    if((contactDetail.lastSeenMessageTimestamp)< this.state.lastMessageReceivedTimestamp){
+      this.setState({NewMessage:false})
+      var updates={}
+      updates[`users/${userUid}/contacts/${contactDetail.uid}/lastSeenMessageTimestamp`]=Date.now()
+      db.ref().update(updates,(error)=>{
+        console.log(error)
+      })
+  }
   }
   render() {
     //const { contactDetail, RecMsgTstamp, currentOwner } = this.props;
@@ -42,13 +61,12 @@ class Contacts extends Component {
     );
   }
 }
-/*const mapStateToProps = (state) => {
-  console.log("consta ", state.msgTimestamp.lastTimestamp);
+const mapStateToProps = (state) => {
+  console.log(state.getChat)
   return {
-    currentOwner: state.getChat.contactDetail.uid,
-    RecMsgTstamp: state.msgTimestamp.lastTimestamp,
+    currentOppositeUser: state.getChat.receiver.uid,
   };
-};*/
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     currentChatPath: (y) => {
@@ -56,4 +74,4 @@ const mapDispatchToProps = (dispatch) => {
     },
   };
 };
-export default connect(null, mapDispatchToProps)(Contacts);
+export default connect(mapStateToProps, mapDispatchToProps)(Contacts);

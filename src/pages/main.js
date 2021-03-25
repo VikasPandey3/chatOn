@@ -5,10 +5,10 @@ import { connect } from "react-redux";
 import Contacts from "../pages/Contacts";
 import ShowChat from "./ShowChat";
 import Status from "./Status";
-import Nav from "../components/Nav";
+// import Nav from "../components/Nav";
 //import ContactList from "../components/ContactList";
 import MessageBox from "../components/MessageBox";
-import "../assets/ChatBox.css";
+// import "../assets/ChatBox.css";
 //import ImageUpload from "../components/ImageUpload";
 class main extends Component {
   constructor(props) {
@@ -18,6 +18,7 @@ class main extends Component {
       contacts: [],
     };
     this.getUid = this.getUid.bind(this);
+    this.onChangeContact=this.onChangeContact.bind(this);
   }
   getUid(uid1, uid2) {
     if (uid1 < uid2) {
@@ -26,16 +27,20 @@ class main extends Component {
       return uid2 + uid1;
     }
   }
+  onChangeContact(snapshot){
+      var contact = [];
+      snapshot.forEach((snap) => {
+        contact.push(snap.val());
+      });
+      this.setState({ contacts: contact });
+  }
+  componentWillUnmount(){
+    db.ref(`users/${this.state.user.uid}/contacts`).off('value',this.onChangeContact)
+  }
   componentDidMount() {
     db.ref(`users/${this.state.user.uid}/contacts`).on(
       "value",
-      (snapshot) => {
-        var contact = [];
-        snapshot.forEach((snap) => {
-          contact.push(snap.val());
-        });
-        this.setState({ contacts: contact });
-      },
+      this.onChangeContact,
       (error) => {
         console.log(error);
       }
@@ -81,7 +86,7 @@ class main extends Component {
                 <div className="flex-grow overflow-y-auto relative flex flex-col bg-blue-400">
                   {this.state.contacts.map((contact,i)=>{
                     const path=this.getUid(this.state.user.uid,contact.uid);
-                    return(<Contacts key={i} contactDetail={contact} path={path}/> )
+                    return(<Contacts key={i} contactDetail={contact} path={path} userUid={this.state.user.uid}/> )
                     })
                   }
                 </div>

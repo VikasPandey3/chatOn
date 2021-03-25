@@ -8,29 +8,38 @@ class ShowChat extends Component {
     super(props);
     this.state = {
       user: auth().currentUser,
-      chats:[]
+      chats:[],
     };
+    this.onChatChange=this.onChatChange.bind(this);
   }
-
-  componentDidUpdate(preProp) {
-    console.log(preProp.path)
-    console.log(this.props.path)
-    if(this.props.path!==preProp.path){
-      console.log("upadate")
-      db.ref(`onetoone/${this.props.path}/chats`).on('value',(snapshot)=>{
+  onChatChange(snapshot){
+    console.log('showchat invoke')
         var chats=[]
+        console.log(snapshot.val())
       snapshot.forEach((snap)=>{
           chats.push(snap.val())
       })
       this.setState({chats:chats})
-    })
+  }
+  componentDidUpdate(preProp) {
+    console.log(preProp.path)
+    console.log(this.props.path)
+    console.log("show chat updated")
+    if(this.props.path!==preProp.path){
+      console.log("path change")
+      db.ref(`onetoone/${preProp.path}/chats`).off('value',this.onChatChange)
+      db.ref(`onetoone/${this.props.path}/chats`).on('value',this.onChatChange)
   }
    const container = document.getElementById("chat-view");
      if (container) {
+       console.log('scroll')
       container.scrollTo(0, container.scrollHeight);
      } 
   }
   
+  componentWillUnmount(){
+    db.ref(`onetoone/${this.props.path}/chats`).off('value',this.onChatChange)
+  }
   render() {
     return (
     <>
@@ -50,44 +59,7 @@ class ShowChat extends Component {
     );
   }
 }
-{/*<div style={{height:'589px', marginTop:'62px'}} className='overflow-hidden'>
-      <div className='grid grid-cols-6 h-full'>
-        <div className='hidden sm:block sm:col-span-2 bg-yellow-200 overflow-y-auto'>
-          <div className='h-20 bg-green-300 border-b-2'>
-            <AddContact userUid={this.state.user.uid}/>
-          </div>
-          {this.state.contacts.length > 0 ? (
-          <>
-            {this.state.contacts.map((contact, i) => {
-              const path = this.getUid(this.state.user.uid, contact.uid);
-              return (
-                <Contacts
-                  key={i}
-                  contactDetail={contact}
-                  path={path}
-                  userUid={this.state.user.uid}
-                />
-              );
-            })}
-          </>
-        ) : (
-          <div className="p-4">No contacts is available please add contacs</div>
-        )}
-        </div>
-        <div className='col-span-6 sm:col-span-4 bg-teal-700 h-full'>
-          <div style={{height:'62px'}}><Status/></div>
-          <div  style={{height:'468px'}} className=' flex flex-col bg-white'>
-            <div className='flex flex-1 min-h-0' >
-              <div className='flex-1 overflow-auto' id="chat-view">
-               <ShowChat/>
-              </div>       
-            </div>
-          </div>
-          <MessageBox/>
-          
-        </div>
-        </div>
-        </div>*/}
+
 const mapStateToProps = (state) => {
   return {
     path: state.getChat.path,

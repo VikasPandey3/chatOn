@@ -2,7 +2,7 @@ import { RECIEVED_CHAT_DATA, SET_CURRENT_CHAT_PATH,RECIEVED_MESSAGES_TIMESTAMP }
 
 const initChat = {
   path: "",
-  receiver:"",
+  receiver:{name:"",email:"",uid:"",lastSeenMessageTimestamp:0},
   visibility:false
 };
 const initTimestamp = {
@@ -13,11 +13,12 @@ export const chatUpdateReducer = (state = initChat, action) => {
   switch (action.type) {
     case SET_CURRENT_CHAT_PATH:
       if (state.path !== action.payload[0]) {
-        console.log("passowner");
+        console.log(action.payload[1]);
         return {
           ...state,
           path: action.payload[0],
-          receiver: action.payload[1],
+          receiver: {...action.payload[1]
+          },
           visibility:true
           
         };
