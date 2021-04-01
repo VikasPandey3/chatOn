@@ -5,17 +5,14 @@ import { connect } from "react-redux";
 import Contacts from "../pages/Contacts";
 import ShowChat from "./ShowChat";
 import Status from "./Status";
-// import Nav from "../components/Nav";
-//import ContactList from "../components/ContactList";
 import MessageBox from "../components/MessageBox";
-// import "../assets/ChatBox.css";
-//import ImageUpload from "../components/ImageUpload";
 class main extends Component {
   constructor(props) {
     super(props);
     this.state = {
       user: auth().currentUser,
       contacts: [],
+      noContact:false
     };
     this.getUid = this.getUid.bind(this);
     this.onChangeContact=this.onChangeContact.bind(this);
@@ -32,12 +29,17 @@ class main extends Component {
       snapshot.forEach((snap) => {
         contact.push(snap.val());
       });
-      this.setState({ contacts: contact });
+      if(contact.length>0)
+        this.setState({ contacts: contact });
+      else
+      this.setState({ noContact:true });
   }
   componentWillUnmount(){
     db.ref(`users/${this.state.user.uid}/contacts`).off('value',this.onChangeContact)
   }
   componentDidMount() {
+    var current=new Date()
+    console.log('user authentication start',current.toLocaleTimeString())
     db.ref(`users/${this.state.user.uid}/contacts`).on(
       "value",
       this.onChangeContact,
@@ -45,6 +47,7 @@ class main extends Component {
         console.log(error);
       }
     );
+    console.log('user authentication end',current.toLocaleTimeString())
   }
   
   render() {
@@ -84,21 +87,20 @@ class main extends Component {
                   <AddContact/>
                 </div>
                 <div className="flex-grow overflow-y-auto relative flex flex-col bg-blue-400">
-                  {this.state.contacts.map((contact,i)=>{
+                  { this.state.noContact?
+                    <div className='text-center'>No Contacts are added</div>:
+                    this.state.contacts.length>0?
+                    this.state.contacts.map((contact,i)=>{
                     const path=this.getUid(this.state.user.uid,contact.uid);
                     return(<Contacts key={i} contactDetail={contact} path={path} userUid={this.state.user.uid}/> )
-                    })
+                    }):
+                    <div className='text-center'>Fetching contacts list...</div>
                   }
                 </div>
               </div>
             </div>
-            <div
-                className={this.props.visibility?" block ":" hidden "+"h-full relative overflow-hidden origin-top-left bg-white"}
-                style={{
-                  flexBasis: "70%",
-                  transform: "translatez(0)",
-                  // display:this.props.visibility?'block':'hidden',
-                }}
+            <div className={this.props.visibility?" block ":" hidden "+"h-full relative overflow-hidden origin-top-left bg-white"}
+                style={{flexBasis: "70%",transform: "translatez(0)"}}
               >
                 {/* third div inside third div*/} 
                 <div className="flex flex-col h-full origin-top-left bg-yellow-600">
@@ -108,14 +110,9 @@ class main extends Component {
                   <MessageBox/>
                 </div>
               </div>
-            <div className={!this.props.visibility?" block ":" hidden "+"h-full relative overflow-hidden origin-top-left bg-white relative"}
-                style={{
-                  flexBasis: "70%",
-                  transform: "translatez(0)",
-                  // display:!this.props.visibility?'block':'hidden'
-                
-                
-                }}>
+              <div className={!this.props.visibility?" block ":" hidden "+"h-full relative overflow-hidden origin-top-left bg-white relative"}
+                style={{flexBasis: "70%",transform: "translatez(0)"}}
+              >
                <div className='absolute text-center' style={{top:'50%', left:'50%',width:'200px',height:'50px',marginTop:'-25px',marginLeft:'-100px'}}> Wellcome to chatOn</div>
             </div>
           </div>

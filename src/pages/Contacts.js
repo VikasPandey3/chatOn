@@ -7,8 +7,6 @@ class Contacts extends Component {
     super(props);
     this.passData = this.passData.bind(this);
     this.state = {
-      //isOnline: null,
-      //presense: null,
       NewMessage:false,
       lastMessageReceivedTimestamp:0,
     };
@@ -20,10 +18,6 @@ class Contacts extends Component {
     
     db.ref(`onetoone/${path}/lastSentMessageTimestamp`)
       .on("value", (snapshot) => {
-        // if (snapshot.val()&&snapshot.val()[userUid]<snapshot.val()[receiver]){
-        //   // New Message, update UI.
-        //   this.setState({NewMessage: true });
-        // }
         console.log(this.props.currentOppositeUser,"A",receiver)
         if((contactDetail.lastSeenMessageTimestamp)< snapshot.val()[receiver]){
           if(this.props.currentOppositeUser===receiver){
@@ -47,7 +41,7 @@ class Contacts extends Component {
       db.ref().update(updates,(error)=>{
         console.log(error)
       })
-  }
+    }
   }
   render() {
     //const { contactDetail, RecMsgTstamp, currentOwner } = this.props;

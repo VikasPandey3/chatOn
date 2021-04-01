@@ -26,14 +26,15 @@ export class MessageBox extends Component {
   async handleSubmit() {
     this.setState({ writeError: null });
     try {
-      var updates={}
+      var updates={};
       var message = {
         content: document.getElementById('input_message').textContent,
         timestamp: Date.now(),
         from: this.state.user.uid,
         to: this.props.receiver.uid,
         };
-      
+      document.getElementById('input_message').textContent="";
+      this.changeVisibility()
       db.ref(`onetoone/${this.props.path}`).child('chats').push(message)
       updates[`onetoone/${this.props.path}/lastSentMessageTimestamp/${this.state.user.uid}`]=message.timestamp 
         
@@ -58,7 +59,7 @@ export class MessageBox extends Component {
               <div onInput={this.changeVisibility} id='input_message' className='relative overflow-hidden overflow-y-auto w-full' contentEditable='true' style={{minHeight:'20px',maxHeight:'100px',wordWrap:'break-word'}}></div>
             </div>
           </div>
-          <div onClick={this.handleSubmit} style={{flex:'none',padding:'5px 10px', minHeight:'52px'}}>Send</div>
+          <div onClick={this.handleSubmit} className='text-center cursor-pointer bg-green-200 rounded-md hover:text-white p-2' style={{flex:'none', minHeight:'52px'}}>Send</div>
         </div>
       </footer>
       </>

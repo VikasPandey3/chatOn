@@ -16,7 +16,7 @@ function PrivateRoute({component:Component,authenticated,...rest}) {
   return (
       <Route
        {...rest}
-        render={(props)=> authenticated === true ?<Component{...props}/>:<Redirect
+        render={(props)=> authenticated ?<Component{...props}/>:<Redirect
         to={{pathname:'/login', state:{from:props.location}}}/>}      
       />
   )
@@ -26,7 +26,7 @@ function PublicRoute({ component: Component, authenticated, ...rest }) {
   return (
     <Route
       {...rest}
-      render={(props) => authenticated === false
+      render={(props) => authenticated
         ? <Component {...props} />
         : <Redirect to='/main' />}
     />
@@ -43,6 +43,8 @@ function PublicRoute({ component: Component, authenticated, ...rest }) {
 
   }
   componentDidMount() {
+    var current=new Date()
+    console.log('user authentication start',current.toLocaleTimeString())
     auth().onAuthStateChanged((user)=>{
       if(user){
         this.setState({
@@ -56,11 +58,12 @@ function PublicRoute({ component: Component, authenticated, ...rest }) {
         })
       }
     })
+    console.log('user authentication end',current.toLocaleTimeString())
   }
   
   render() {
     console.log('app.js')
-    return this.state.loading === true ? <h2>Loading...</h2> : (
+    return this.state.loading? <h2>Loading...</h2> : (
       <Router>
         <Switch>
           <Route exact path="/" component={Home}></Route>
