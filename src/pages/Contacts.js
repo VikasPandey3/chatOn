@@ -19,7 +19,7 @@ class Contacts extends Component {
     db.ref(`onetoone/${path}/lastSentMessageTimestamp`)
       .on("value", (snapshot) => {
         console.log(this.props.currentOppositeUser,"A",receiver)
-        if((contactDetail.lastSeenMessageTimestamp)< snapshot.val()[receiver]){
+        if(snapshot.val()&&(contactDetail.lastSeenMessageTimestamp)< snapshot.val()[receiver]){
           if(this.props.currentOppositeUser===receiver){
             this.setState({lastMessageReceivedTimestamp:snapshot.val()[receiver] });
           }

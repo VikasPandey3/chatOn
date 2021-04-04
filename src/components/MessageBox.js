@@ -30,6 +30,8 @@ export class MessageBox extends Component {
       var message = {
         content: document.getElementById('input_message').textContent,
         timestamp: Date.now(),
+        date: new Date().toLocaleDateString(),
+        time:new Date().toLocaleTimeString(),
         from: this.state.user.uid,
         to: this.props.receiver.uid,
         };
@@ -51,7 +53,7 @@ export class MessageBox extends Component {
       <>
       <footer className="bg-teal-500 relative order-3 w-full block" style={{flex: "none", minHeight: "62px" }}>
         <div className='flex flex-row border-l-2 visible relative max-w-full' style={{minHeight: "62px",padding:'5px 10px' }}>
-          <div className='flex' style={{flex:'none',padding:'5px 10px', minHeight:'52px',marginRight:'-10px'}}></div>
+          <div className='flex' style={{flex:'none',padding:'5px 10px',marginRight:'-10px'}}></div>
           <div className=' bg-gray-400 min-w-0' style={{borderRadius:'21px',flex:'auto',padding:'9px 12px 11px',margin:'5px 10px', minHeight:'20px'}}>
             <div className='flex relative overflow-hidden pr-0 flex-grow flex-shrink' >
               <div className='absolute top-0' style={{left:'2px',visibility:this.state.visibility}}>
@@ -59,7 +61,7 @@ export class MessageBox extends Component {
               <div onInput={this.changeVisibility} id='input_message' className='relative overflow-hidden overflow-y-auto w-full' contentEditable='true' style={{minHeight:'20px',maxHeight:'100px',wordWrap:'break-word'}}></div>
             </div>
           </div>
-          <div onClick={this.handleSubmit} className='text-center cursor-pointer bg-green-200 rounded-md hover:text-white p-2' style={{flex:'none', minHeight:'52px'}}>Send</div>
+          <div onClick={this.handleSubmit} className=' flex items-center cursor-pointer bg-green-200 rounded-md hover:text-white my-2'><div className='p-1'>send</div></div>
         </div>
       </footer>
       </>

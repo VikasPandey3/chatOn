@@ -8,7 +8,7 @@ import {
 import Home from './pages/Home';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
-import Main from './pages/main'
+import Main from './pages/main';
 import { auth } from './services/firebase';
 
 
@@ -27,8 +27,8 @@ function PublicRoute({ component: Component, authenticated, ...rest }) {
     <Route
       {...rest}
       render={(props) => authenticated
-        ? <Component {...props} />
-        : <Redirect to='/main' />}
+        ? <Redirect to='/main' />
+        : <Component {...props} />}
     />
   )
 }

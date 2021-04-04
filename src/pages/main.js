@@ -16,6 +16,7 @@ class main extends Component {
     };
     this.getUid = this.getUid.bind(this);
     this.onChangeContact=this.onChangeContact.bind(this);
+    this.handleSignout=this.handleSignout.bind(this)
   }
   getUid(uid1, uid2) {
     if (uid1 < uid2) {
@@ -23,6 +24,16 @@ class main extends Component {
     } else {
       return uid2 + uid1;
     }
+  }
+  handleSignout() {
+    auth()
+      .signOut()
+      .then(() => {
+        console.log("successful logout");
+      })
+      .catch((error) => {
+        this.setState({ logoutError: error.message });
+      });
   }
   onChangeContact(snapshot){
       var contact = [];
@@ -49,7 +60,6 @@ class main extends Component {
     );
     console.log('user authentication end',current.toLocaleTimeString())
   }
-  
   render() {
     console.log("main render");
     return (
@@ -65,7 +75,7 @@ class main extends Component {
             >
             {/* third div with min height */}
             <div 
-              className="h-full relative overflow-hidden bg-pink-500"
+              className="h-full relative overflow-hidden bg-pink-500 hidden sm:block"
               style={{
                 flexBasis: "30%",
                 transform: "translatez(0)",
@@ -79,8 +89,9 @@ class main extends Component {
                   style={{ height: "59px", 
                   // zIndex: "1000",
                     flex: "none" }}
-                >
-                  <div>{this.state.user.email}</div>
+                > 
+                  <div className='mx-2'>{this.state.user.email}</div>
+                  <div className='mx-2'><button onClick={this.handleSignout}>Logout </button></div>
                 </header>
                 {/* <span className="flex flex-col" style={{ flex: "none" }}></span> */}
                 <div className="bg-green-500" style={{ flex: "none", height: "64px" }}>
@@ -99,18 +110,18 @@ class main extends Component {
                 </div>
               </div>
             </div>
-            <div className={this.props.visibility?" block ":" hidden "+"h-full relative overflow-hidden origin-top-left bg-white"}
+            <div id='70' className={"h-full relative overflow-hidden origin-top-left bg-white flexBasis "+(this.props.visibility?" block ":" hidden ")}
                 style={{flexBasis: "70%",transform: "translatez(0)"}}
               >
                 {/* third div inside third div*/} 
                 <div className="flex flex-col h-full origin-top-left bg-yellow-600">
-                  <div className="w-full h-full absolute top-0 bg-blue-900"></div>
+                  <div className="w-full h-full absolute top-0 bg-blue-200"></div>
                   <Status/>
                   <ShowChat/>
                   <MessageBox/>
                 </div>
               </div>
-              <div className={!this.props.visibility?" block ":" hidden "+"h-full relative overflow-hidden origin-top-left bg-white relative"}
+            <div className={!this.props.visibility?" block ":" hidden "+"h-full relative overflow-hidden origin-top-left bg-white relative"}
                 style={{flexBasis: "70%",transform: "translatez(0)"}}
               >
                <div className='absolute text-center' style={{top:'50%', left:'50%',width:'200px',height:'50px',marginTop:'-25px',marginLeft:'-100px'}}> Wellcome to chatOn</div>
