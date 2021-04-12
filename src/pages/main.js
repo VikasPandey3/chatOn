@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { db, auth } from "../services/firebase";
+import { db, auth,serverTime } from "../services/firebase";
 import AddContact from "../components/AddContact";
 import { connect } from "react-redux";
 import Contacts from "../pages/Contacts";
@@ -50,7 +50,7 @@ class main extends Component {
   }
   componentDidMount() {
     var current=new Date()
-    console.log('user authentication start',current.toLocaleTimeString())
+    console.log('contact list is fetching',current.toLocaleTimeString())
     db.ref(`users/${this.state.user.uid}/contacts`).on(
       "value",
       this.onChangeContact,
@@ -58,7 +58,31 @@ class main extends Component {
         console.log(error);
       }
     );
-    console.log('user authentication end',current.toLocaleTimeString())
+    console.log('fetching end',current.toLocaleTimeString())
+    // Since I can connect from multiple devices or browser tabs, we store each connection instance separately
+    // any time that connectionsRef's value is null (i.e. has no children) I am offline
+    var myConnectionsRef = db.ref(`users/${this.state.user.uid}/connections`);
+
+    // stores the timestamp of my last disconnect (the last time I was seen online)
+    var lastOnlineRef = db.ref(`users/${this.state.user.uid}/lastOnline`);
+
+    var connectedRef = db.ref('.info/connected');
+    connectedRef.on('value', (snap) => {
+      if (snap.val() === true) {
+        // We're connected (or reconnected)! Do anything here that should happen only if online (or on reconnect)
+        var con = myConnectionsRef.push();
+
+        // When I disconnect, remove this device
+        con.onDisconnect().remove();
+
+        // Add this device to my connections list
+        // this value could contain info about the device or a timestamp too
+        con.set(true);
+
+        // When I disconnect, update the last time I was seen online
+        lastOnlineRef.onDisconnect().set(serverTime);
+      }
+    });
   }
   render() {
     console.log("main render");

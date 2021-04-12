@@ -56,7 +56,6 @@ class Contacts extends Component {
   }
 }
 const mapStateToProps = (state) => {
-  console.log(state.getChat)
   return {
     currentOppositeUser: state.getChat.receiver.uid,
   };

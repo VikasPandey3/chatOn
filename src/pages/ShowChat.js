@@ -54,7 +54,7 @@ class ShowChat extends Component {
                   <div className='text-center w-full py-1 relative sticky top-0' key={i}><div style={{minWidth:'30px' ,padding:'3px 10px',}} className='inline-block bg-white rounded-lg m-auto text-black shadow'>{chatsOnDate}</div></div>
                   {this.state.chats[chatsOnDate].map((chat,j)=>{
                       return(
-                       <div className='w-full text-center py-2' key={j}>
+                       <div className='w-full text-center py-2 my-8' key={j}>
                          <div  className={'rounded-md font-light '+(chat.from===this.state.user.uid?'float-right bg-green-400 text-white mr-4 sm:mr-20':'float-left bg-green-200 text-black ml-4 sm:ml-20')}>
                            <div className='flex justify-end items-end' style={{minWidth:'30px' ,padding:'3px 10px'}}>
                             <div className='pr-2'>{chat.content}</div>
