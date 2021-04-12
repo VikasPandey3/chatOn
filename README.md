@@ -1,5 +1,5 @@
-It is a web based one to one chat application.
-This app is created by using ReactJS, Firebase and TailwindCSS.
+## It is a web based one to one chat application.
+## This app is created by using ReactJS, Firebase and TailwindCSS.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
