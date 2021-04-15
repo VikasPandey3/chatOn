@@ -65,7 +65,7 @@ function PublicRoute({ component: Component, authenticated, ...rest }) {
         <Router>
           <Switch>
             <PublicRoute exact path="/" authenticated={this.state.authenticated} component={Home}></PublicRoute>
-            <PrivateRoute path="/main" authenticated={this.state.authenticated} component={Main}></PrivateRoute>
+            <Route path="/main" component={Main}></Route>
             {/* <PublicRoute path="/signup" authenticated={this.state.authenticated} component={Signup}></PublicRoute>
             <PublicRoute path="/login" authenticated={this.state.authenticated} component={Login}></PublicRoute> */}
           </Switch>

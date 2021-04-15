@@ -108,56 +108,41 @@ class main extends Component {
       }}
     };
     return (
-      <div className="absolute w-full h-full overflow-hidden top-0 left-0 p-0 m-0">
-        <div className="h-full w-full relative overflow-hidden overflow-y-auto bg-green-900" style={{ zIndex: "100" }}>
-          <div className="flex relative top-0 left-0 w-full h-full overflow-hidden origin-center bg-white"style={{ minHeight: "512px", backgroundPosition: "0 0" }}>
-            
-            {/* contact box start */}
-            <div className="h-full w-full relative overflow-hidden bg-pink-500 sm:block"style={style.contectBox}>
-              <div className="flex flex-col h-full">
-                <header className="flex bg-red-400  flex-baseline w-full content-center justify-end px-4 py-3 relative"style={{ height: "59px", flex: "none" }}> 
-                  <div className='mx-2'>{this.state.user.email}</div>
-                  <div className='mx-2'><button onClick={this.handleSignout}>Logout </button></div>
-                </header>
-                <div className="bg-green-500" style={{ flex: "none", height: "64px" }}><AddContact/></div>
-                <div className="flex-grow overflow-y-auto relative flex flex-col bg-blue-400">
-                    { this.state.noContact?
-                      <div className='text-center'>No Contacts are added</div>:
-                      this.state.contacts.length>0?
-                      this.state.contacts.map((contact,i)=>{
-                      const path=this.getUid(this.state.user.uid,contact.uid);
-                      return(<Contacts key={i} contactDetail={contact} path={path} userUid={this.state.user.uid}/> )
-                      }):
-                      <div className='text-center'>Fetching contacts list...</div>
-                    }
-                </div>
+      // container
+      <div className=" w-full m-auto">
+        {/* chat */}
+          <div className='flex flex-col h-screen bg-teal-300'>
+          {/* chat header start */}
+          <div className='flex cursor-pointer'>
+            {/* profile start */}
+            <div className=' w-full flex items-center px-3 bg-blue-300 relative' style={{height:'60px'}}>
+              {/* left */}
+              <div>
+                <img src={process.env.PUBLIC_URL+'/img/arrow.png'} className='absolute w-8 inline-block cursor-pointer'style={{top:'15px'}} />
+                <img src={process.env.PUBLIC_URL+"/img/pp.png"} className='inline-block rounded-full ml-8 mr-2' style={{width:"50px"}}/>
+                <h2 className='inline-block align-bottom font-bold text-white' style={{lineHeight:'50px'}}>Vikas</h2>
+                <span className='absolute' style={{top:'38px',left:"103px",fontSize:"14px"}}>online</span>
               </div>
+              {/* right */}
+              <div></div>
             </div>
-            {/* contact box end */}
-
-            {/* chatBox start */}
-            <div className={(this.props.visibility?" block ":" hidden ")} style={style.chatBox}>
-              <div id='70' className="h-full relative overflow-hidden origin-top-left bg-white flexBasis ">
-                <div className="flex flex-col h-full origin-top-left bg-yellow-600">
-                  <div className="w-full h-full absolute top-0 bg-blue-200"></div>
-                  <Status/>
-                  <ShowChat/>
-                  <MessageBox/>
-                </div> 
-              </div>
-            </div>
-            {/* chatBox end */}
-
-            {/* initBox start */}
-            <div className={(!this.props.visibility?" block ":" hidden ")} style={style.initBox}>
-              <div className={"h-full relative overflow-hidden origin-top-left bg-white relative"}>
-                <div className='absolute text-center' style={{top:'50%', left:'50%',width:'200px',height:'50px',marginTop:'-25px',marginLeft:'-100px'}}> Wellcome to chatOn</div>
-              </div> 
-            </div>
-            {/* initBox end */}
+            {/* profile end */}
           </div>
+          {/* chat header end */}
+          {/* chat box start*/}
+          <div className='flex-1'>
+
+          </div>
+          {/* chat box end */}
+          {/* chat footer start */}
+          <div className="h-12 bg-blue-700 w-full">
+
+          </div>
+          {/* chat footer end */}
         </div>
+        {/* chat end */}
       </div>
+      // container end
     );
   }
 }
