@@ -3,7 +3,6 @@ import {
   SET_CURRENT_CHAT_PATH,
   RECIEVED_MESSAGES_TIMESTAMP,
 } from "./const";
-import { db } from "../services/firebase";
 export const recevedChat = (data) => {
   console.log("cr", data);
   return {
@@ -11,22 +10,11 @@ export const recevedChat = (data) => {
     payload: data,
   };
 };
-/*export const chatOwner = (info) => {
-  return {
-    type: CHAT_OWNER,
-    payload: info,
-  };
-};*/
 export const recivedMsgTime = (listTs) => {
   return {
     type: RECIEVED_MESSAGES_TIMESTAMP,
     payload: listTs,
   };
-};
-
-const obj = {
-  Listener: null,
-  prevPath: "",
 };
 export const setCurrentChatPath=(path)=>{
   return{

@@ -24,7 +24,10 @@ class Login extends Component {
     event.preventDefault();
     this.setState({ error: "" });
     try {
-      await signin(this.state.email, this.state.password);
+      await signin(this.state.email, this.state.password)
+      .then((x)=>{
+        console.log(x)
+      });
     } catch (error) {
       this.setState({ error: error.message });
     }
@@ -38,9 +41,9 @@ class Login extends Component {
   }
   render() {
     return (
-      <div className='flex items-center justify-center w-full h-screen sm:py-32"'>
+      <div className='flex items-center justify-center w-full h-full py-24 sm:py-32'>
         <form
-          className="w-2/5 m-4 border-2 border-blue-500 rounded-md shadow "
+          className=" w-full sm:w-2/5 mx-4 sm:w-2/5  border-2 border-blue-500 rounded-md shadow "
           autoComplete="off"
           onSubmit={this.handleSubmit}
         >

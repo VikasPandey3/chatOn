@@ -14,57 +14,57 @@ export class Nav extends Component {
       toggle: false,
     };
 
-    this.handleSignout = this.handleSignout.bind(this);
+    // this.handleSignout = this.handleSignout.bind(this);
   }
   openCard = () => {
     this.setState({ isOpen: !this.state.isOpen });
   };
 
-  handleSignout() {
-    auth()
-      .signOut()
-      .then(() => {
-        console.log("successful logout");
-      })
-      .catch((error) => {
-        this.setState({ logoutError: error.message });
-      });
-  }
-  handleChange = (e) => {
-    if (e.target.files[0]) {
-      console.log(e.target.files[0]);
-      const image = e.target.files[0];
-      this.setState(() => ({ image }));
-    }
-  };
+  // handleSignout() {
+  //   auth()
+  //     .signOut()
+  //     .then(() => {
+  //       console.log("successful logout");
+  //     }) 
+  //     .catch((error) => {
+  //       this.setState({ logoutError: error.message });
+  //     });
+  // }
+  // handleChange = (e) => {
+  //   if (e.target.files[0]) {
+  //     console.log(e.target.files[0]);
+  //     const image = e.target.files[0];
+  //     this.setState(() => ({ image }));
+  //   }
+  // };
 
-  handleUpload = () => {
-    const { image } = this.state;
-    const uploadTask = Storage.ref(`profileImages/${image.name}`).put(image);
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        // progress function ...
-        const progress = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-        this.setState({ progress });
-      },
-      (error) => {
-        // Error function ...
-        console.log(error);
-      },
-      () => {
-        // complete function ...
-        Storage.ref("profileImages")
-          .child(image.name)
-          .getDownloadURL()
-          .then((url) => {
-            this.setState({ url });
-          });
-      }
-    );
-  };
+  // handleUpload = () => {
+  //   const { image } = this.state;
+  //   const uploadTask = Storage.ref(`profileImages/${image.name}`).put(image);
+  //   uploadTask.on(
+  //     "state_changed",
+  //     (snapshot) => {
+  //       // progress function ...
+  //       const progress = Math.round(
+  //         (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+  //       );
+  //       this.setState({ progress });
+  //     },
+  //     (error) => {
+  //       // Error function ...
+  //       console.log(error);
+  //     },
+  //     () => {
+  //       // complete function ...
+  //       Storage.ref("profileImages")
+  //         .child(image.name)
+  //         .getDownloadURL()
+  //         .then((url) => {
+  //           this.setState({ url });
+  //         });
+  //     }
+  //   );
+  // };
   render() {
     return (
       <>
@@ -77,9 +77,9 @@ export class Nav extends Component {
             </div>
             
             <div className={(this.state.toggle?"block ":"hidden ")+" flex flex-col sm:flex sm:flex-row sm:flex-grow justify-end divide-y divide-gray-400"}>
-                <button className='text-gray-200 sm:m-2 sm:border-none hover:text-black  rounded-md hover:bg-white font-semibold p-3 text-left'>Home</button>
-                <button className='text-gray-200 sm:m-2 sm:border-none hover:text-black  rounded-md hover:bg-white font-semibold p-3 text-left'>{this.props.user.email}</button>
-                <button onClick={this.handleSignout} className='text-gray-200 sm:m-2 rounded-md sm:border-none hover:text-black hover:bg-white font-semibold p-3 text-left'>Logout</button>
+                <button className='text-gray-200 sm:m-2 sm:border-none hover:text-black outline-none rounded-md hover:bg-white font-semibold p-3 text-left'>Home</button>
+                <button className='text-gray-200 sm:m-2 sm:border-none hover:text-black  rounded-md hover:bg-white font-semibold p-3 text-left'>LogIn</button>
+                <button onClick={this.handleSignout} className='text-gray-200 sm:m-2 rounded-md sm:border-none hover:text-black hover:bg-white font-semibold p-3 text-left'>SignUp</button>
             </div>
         </nav>
       

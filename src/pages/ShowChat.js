@@ -18,7 +18,7 @@ class ShowChat extends Component {
       snapshot.forEach((snap)=>{
           // chats.push(snap.val())
           var x=snap.val().date
-          if(y!=x){
+          if(y!==x){
             chats[x]=[]
             y=x;
           }

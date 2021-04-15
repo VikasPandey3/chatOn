@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { db, auth } from "../services/firebase";
+import { db} from "../services/firebase";
 
 
 class Status extends Component {

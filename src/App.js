@@ -6,10 +6,9 @@ import {
   Redirect,
 } from "react-router-dom";
 import Home from './pages/Home';
-import Signup from './pages/Signup';
-import Login from './pages/Login';
 import Main from './pages/main';
 import { auth } from './services/firebase';
+import Radium, { StyleRoot } from 'radium'
 
 
 function PrivateRoute({component:Component,authenticated,...rest}) {
@@ -17,7 +16,7 @@ function PrivateRoute({component:Component,authenticated,...rest}) {
       <Route
        {...rest}
         render={(props)=> authenticated ?<Component{...props}/>:<Redirect
-        to={{pathname:'/login', state:{from:props.location}}}/>}      
+        to={{pathname:'/', state:{from:props.location}}}/>}      
       />
   )
 }
@@ -43,8 +42,6 @@ function PublicRoute({ component: Component, authenticated, ...rest }) {
 
   }
   componentDidMount() {
-    var current=new Date()
-    console.log('user authentication start',current.toLocaleTimeString())
     auth().onAuthStateChanged((user)=>{
       if(user){
         this.setState({
@@ -58,22 +55,25 @@ function PublicRoute({ component: Component, authenticated, ...rest }) {
         })
       }
     })
-    console.log('user authentication end',current.toLocaleTimeString())
   }
   
   render() {
     console.log('app.js')
-    return this.state.loading? <h2>Loading...</h2> : (
-      <Router>
-        <Switch>
-          <Route exact path="/" component={Home}></Route>
-          <PrivateRoute path="/main" authenticated={this.state.authenticated} component={Main}></PrivateRoute>
-          <PublicRoute path="/signup" authenticated={this.state.authenticated} component={Signup}></PublicRoute>
-          <PublicRoute path="/login" authenticated={this.state.authenticated} component={Login}></PublicRoute>
-        </Switch>
-      </Router>
+    return(
+       this.state.loading? <h2>Loading...</h2> : (
+      <StyleRoot>
+        <Router>
+          <Switch>
+            <PublicRoute exact path="/" authenticated={this.state.authenticated} component={Home}></PublicRoute>
+            <PrivateRoute path="/main" authenticated={this.state.authenticated} component={Main}></PrivateRoute>
+            {/* <PublicRoute path="/signup" authenticated={this.state.authenticated} component={Signup}></PublicRoute>
+            <PublicRoute path="/login" authenticated={this.state.authenticated} component={Login}></PublicRoute> */}
+          </Switch>
+        </Router>
+      </StyleRoot>
+       )
     );
   }
 }
 
-export default App
+export default Radium(App)

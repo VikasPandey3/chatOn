@@ -13,7 +13,7 @@ class Contacts extends Component {
   }
 
   componentDidMount() {
-    const {path,contactDetail,userUid,currentOppositeUser} = this.props;
+    const {path,contactDetail} = this.props;
     const receiver=contactDetail.uid
     
     db.ref(`onetoone/${path}/lastSentMessageTimestamp`)
@@ -44,7 +44,6 @@ class Contacts extends Component {
     }
   }
   render() {
-    //const { contactDetail, RecMsgTstamp, currentOwner } = this.props;
     const { email,name, uid } = this.props.contactDetail;
     console.log("contacts");
     return (

@@ -38,9 +38,9 @@ class Signup extends Component {
   }
   render() {
     return (
-      <div className='flex items-center justify-center w-full h-screen sm:py-32"'>
+      <div className='flex items-center justify-center w-full h-full py-24 sm:py-32'>
         <form
-          className="w-2/5 m-4 border-2 border-blue-500 rounded-md shadow "
+          className=" w-full sm:w-2/5 mx-4 border-2 border-blue-500 rounded-md shadow "
           autoComplete="off"
           onSubmit={this.handleSubmit}
         >
