@@ -13,11 +13,13 @@ class main extends Component {
     this.state = {
       user: auth().currentUser,
       contacts: [],
-      noContact:false
+      noContact:false,
+      visibility:'visible',
     };
     this.getUid = this.getUid.bind(this);
     this.onChangeContact=this.onChangeContact.bind(this);
-    this.handleSignout=this.handleSignout.bind(this)
+    this.handleSignout=this.handleSignout.bind(this);
+    this.changeVisibility = this.changeVisibility.bind(this);
   }
   getUid(uid1, uid2) {
     if (uid1 < uid2) {
@@ -85,6 +87,15 @@ class main extends Component {
       }
     });
   }
+  changeVisibility(){
+    var message=document.getElementById('input_message').textContent;
+    if((message.length)===0){
+      this.setState({visibility:'visible'})
+    }
+    else if(this.state.visibility==='visible'){
+      this.setState({visibility:'hidden'})
+    }
+  }
   render() {
     const style = {
       contectBox:{
@@ -115,7 +126,7 @@ class main extends Component {
           {/* chat header start */}
           <div className='flex cursor-pointer'>
             {/* profile start */}
-            <div className=' w-full flex items-center px-3 bg-blue-300 relative' style={{height:'60px'}}>
+            <div className=' w-full flex items-center px-3 bg-blue-300 relative justify-between' style={{height:'60px'}}>
               {/* left */}
               <div>
                 <img src={process.env.PUBLIC_URL+'/img/arrow.png'} className='absolute w-8 inline-block cursor-pointer'style={{top:'15px'}} />
@@ -124,7 +135,9 @@ class main extends Component {
                 <span className='absolute' style={{top:'38px',left:"103px",fontSize:"14px"}}>online</span>
               </div>
               {/* right */}
-              <div></div>
+              <div>
+                <img src={process.env.PUBLIC_URL+'/img/more.png'} className="w-8"/>
+              </div>
             </div>
             {/* profile end */}
           </div>
@@ -135,10 +148,14 @@ class main extends Component {
           </div>
           {/* chat box end */}
           {/* chat footer start */}
-          <div className="flex justify-center align-middle relative border-r-4">
-            <div className='w-6 h-10'></div>
-            <div className='flex-1 bg-pink-400 px-6 break-words overflow-x-hidden overflow-y-auto w-full outline-none' contentEditable="true" style={{borderRadius:"60px",minHeight:'30px',maxHeight:"100px"}}></div>
-            <div className='w-6 h-10'></div>
+          <div className='flex flex-row max-w-full relative'>
+            <div className='bg-gray-100 min-w-0 flex flex-row w-full px-2 relative' style={{borderRadius:'21px',minHeight:'40px',marginRight:'60px',marginBottom:'5px',marginLeft:'5px'}}>
+              <img src={process.env.PUBLIC_URL+'/img/attach file.png'} style={{position:'absolute',height:"30px",width:"30px",bottom:"5px"}}/>
+              <div className='absolute' style={{left:'40px',visibility:this.state.visibility,top:"7px"}}>
+              Type message here</div>
+              <div onInput={this.changeVisibility} id='input_message' className="break-words overflow-y-auto w-full py-2 ml-8 mr-4 outline-none z-10" contentEditable="true"style={{minHeight:'20px',maxHeight:"70px"}}></div>
+            </div>
+            <img src={process.env.PUBLIC_URL+'/img/mic.png'} style={{position:'absolute',height:"40px",width:"40px",bottom:"5px",right:'10px'}}/>
           </div>
           {/* chat footer end */}
         </div>
