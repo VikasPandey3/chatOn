@@ -135,8 +135,10 @@ class main extends Component {
           </div>
           {/* chat box end */}
           {/* chat footer start */}
-          <div className="h-12 bg-blue-700 w-full">
-
+          <div className="flex justify-center align-middle relative border-r-4">
+            <div className='w-6 h-10'></div>
+            <div className='flex-1 bg-pink-400 px-6 break-words overflow-x-hidden overflow-y-auto w-full outline-none' contentEditable="true" style={{borderRadius:"60px",minHeight:'30px',maxHeight:"100px"}}></div>
+            <div className='w-6 h-10'></div>
           </div>
           {/* chat footer end */}
         </div>
